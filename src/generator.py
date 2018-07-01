@@ -3,7 +3,7 @@ import sys,argparse, random, math
 words = []
 startString = "Lesbian ipsum dolor sit amet, "
 
-terminators = ["?", ".", "!"]
+terminators = ["?", ".", "!", ".", ".", ".", ".", "."]
 intermediates = [";", ":", ",", ",", ","]
 
 frequencyQueue = []
@@ -93,6 +93,7 @@ def getWordFilteredByFrequency():
         frequencyQueue.pop(0)
     return word
 
+
 def getRandomWord():
     return words[random.randint(0,len(words)-1)]
 
@@ -104,18 +105,22 @@ def capitalizeWord(word):
 
 
 def terminate(sentence):
-    return sentence + terminators[1]
+    index = random.randint(0, len(terminators)-1)
+    return sentence + terminators[index]
 
 
 def punctuate(sentence):
     wordCount = len(sentence)
     if wordCount > 10:
         numIntermediates = random.randint(math.floor(wordCount/20),math.floor(wordCount/10) + 1)
+        placementIndices = []
         for x in range(0,numIntermediates):
             intermediateChoiceIndex = random.randint(0,len(intermediates)-1)
             intermediatePlacementIndex = random.randint(math.floor(wordCount * 1/6), math.floor(wordCount * 2/3))
+            while len(placementIndices) > 0 and (intermediatePlacementIndex in intermediatePlacementIndex or intermediatePlacementIndex <  )
             punctuatedWord = sentence[intermediatePlacementIndex] + intermediates[intermediateChoiceIndex]
             sentence[intermediatePlacementIndex] = punctuatedWord
+            placementIndices.append(intermediatePlacementIndex)
     return sentence
 
 
@@ -143,6 +148,7 @@ def loadWords():
     with open("data/words.txt", "r") as wordFile:
         for line in wordFile:
             words.append(line.strip())
+
 
 def main():
     parser = argparse.ArgumentParser()
