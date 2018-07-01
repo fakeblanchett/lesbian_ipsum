@@ -6,6 +6,7 @@ startString = "Lesbian ipsum dolor sit amet, "
 terminators = ["?", ".", "!"]
 intermediates = [";", ":", ",", ",", ","]
 
+frequencyQueue = []
 
 def generateText(wordCount, paragraphCount):
     text = startString
@@ -73,14 +74,27 @@ def divideParagraphIntoSentences(paragraphWordCount):
 def generateSentence(sentenceSize):
     sentence = []
     while len(sentence) < sentenceSize:
-        index = random.randint(0,len(words)-1)
-        word = words[index]
+        word = getWordFilteredByFrequency()
         if len(sentence) == 0:
             word = capitalizeWord(word)
         sentence.append(word)
     sentence = " ".join(punctuate(sentence))
     sentence = terminate(sentence)
     return sentence
+
+
+def getWordFilteredByFrequency():
+    word = getRandomWord()
+    queueLength = random.randint(10, 15)
+    while len(frequencyQueue) > 0 and word in frequencyQueue:
+        word = getRandomWord()
+    frequencyQueue.append(word)
+    while len(frequencyQueue) > queueLength:
+        frequencyQueue.pop(0)
+    return word
+
+def getRandomWord():
+    return words[random.randint(0,len(words)-1)]
 
 
 def capitalizeWord(word):
@@ -129,7 +143,6 @@ def loadWords():
     with open("data/words.txt", "r") as wordFile:
         for line in wordFile:
             words.append(line.strip())
-
 
 def main():
     parser = argparse.ArgumentParser()
